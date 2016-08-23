@@ -18,8 +18,20 @@ from django.contrib import admin
 
 from inventory import views 
 
+# Django REST Framework
+from django.conf.urls import include
+from rest_framework import routers
+
+# Django REST Framework router
+router = routers.DefaultRouter()
+router.register(r'books', views.BookViewSet)
+router.register(r'games', views.GameViewSet)
+router.register(r'movies', views.MovieViewSet)
+
 urlpatterns = [
+	url(r'^', include(router.urls)),
+	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
     url(r'^apis/books/list', views.get_available_books),
-    url(r'^apis/books/purchase/?P<id>[0-9]', views.purchase_book),
+    url(r'^apis/books/purchase/(?P<id>[0-9])', views.purchase_book),
 ]
