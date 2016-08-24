@@ -11,12 +11,12 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
-		model = Book
+		model = Game
 		fields = ('url', 'name', 'description', 'quantity', 'sale_discount', 
 			'cost', 'active', 'special_description')
 
 class MovieSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
-		model = Book
+		model = Movie
 		fields = ('url', 'name', 'description', 'quantity', 'sale_discount', 
 			'cost', 'active', 'special_description')
