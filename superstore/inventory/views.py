@@ -13,6 +13,13 @@ from .serializers import GameSerializer
 from .serializers import MovieSerializer
 # end imports
 
+# Django REST Framework optional section
+from django.http import Http404
+from rest_framework.exceptions import APIException
+from rest_framework.response import Response
+from rest_framework.views import APIView
+# end imports
+
 # Create your views here.
 
 def get_available_books(request): 
@@ -64,7 +71,31 @@ class MovieViewSet(viewsets.ModelViewSet):
 	queryset = Movie.objects.all().order_by('name')
 	serializer_class = MovieSerializer
 
+# Django REST Framework optional custom API below
 
+class ForbiddenAccess(APIException):
+	status_code = 403
+	default_detail = ‘Action Forbidden’ 
+
+class AvailableBookDetail(APIView):
+	
+	def get_object(self, pk): 
+		try:
+			return Book.objects.get(pk=pk, active=True)
+		except Book.DoesNotExist:
+			raise Http404
+
+	def get(self, request, pk, format=None): 
+		book = self.get_object(pk)
+		serializer = BookSerializer(book, context={‘request’:request})
+
+		return Response(serializer.data)
+
+	def put(self, request, pk, format=None): # we forbid it, but you could add your own logic to handle differently
+		raise ForbiddenAccess
+
+	def delete(self, request, pk, format=None): # we forbid it, but you could add your own logic to handle differently
+		raise Forbidden Access
 
 
 

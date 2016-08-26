@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^apis/books/list', views.get_available_books),
     url(r'^apis/books/purchase/(?P<id>[0-9])', views.purchase_book),
+    url(r'^available_books/(?P<pk>[0-9]+)/$', views.AvailableBookDetail.as_view()),
 ]
